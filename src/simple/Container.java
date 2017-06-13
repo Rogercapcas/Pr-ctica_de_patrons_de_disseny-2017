@@ -6,6 +6,7 @@
 package simple;
 
 import common.DependencyException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -23,7 +24,7 @@ public class Container implements Injector {
     @Override
     public void registerConstant(String name, Object value) throws DependencyException {
         if (this.registeredObjects.containsKey(name)){
-            throw new DependencyException(name + " is already registered.");
+            throw new DependencyException(name + " constant is already registered.");
         } else{
             this.registeredObjects.put(name, value);
         }
@@ -44,11 +45,12 @@ public class Container implements Injector {
         if (this.registeredObjects.containsKey(name)){
             throw new DependencyException(name + " factory is already registered.");
         }else{
+            ArrayList params = new ArrayList();
             for( String parameter:parameters ){
-                
+                params.add(this.getObject(parameter));
             }
             try{
-                this.registeredObjects.put(name, creator.create(parameters));
+                this.registeredObjects.put(name, creator.create(params));
             }catch(DependencyException ex){
             }
         }
