@@ -14,25 +14,25 @@ import java.util.HashMap;
  */
 public class Container implements Injector {
     
-    private HashMap<String,Object> objectNames;
+    private HashMap<String,Object> registeredObjects;
     
     public Container(){
-        this.objectNames = new HashMap<>();
+        this.registeredObjects = new HashMap<>();
     }
 
     @Override
     public void registerConstant(String name, Object value) throws DependencyException {
-        if (this.objectNames.containsKey(name)){
+        if (this.registeredObjects.containsKey(name)){
             throw new DependencyException(name + " is already registered.");
         } else{
-            this.objectNames.put(name, value);
+            this.registeredObjects.put(name, value);
         }
     }
 
     @Override
     public Object getObject(String name) throws DependencyException {
-        if (this.objectNames.containsKey(name)){
-            return this.objectNames.get(name);
+        if (this.registeredObjects.containsKey(name)){
+            return this.registeredObjects.get(name);
         }
         throw new DependencyException(name + " doesn't exists.");
         
@@ -41,11 +41,14 @@ public class Container implements Injector {
     @Override
     public void registerFacotry(String name, Factory creator, String... parameters) throws DependencyException{
         
-        if (this.objectNames.containsKey(name)){
+        if (this.registeredObjects.containsKey(name)){
             throw new DependencyException(name + " factory is already registered.");
         }else{
+            for( String parameter:parameters ){
+                
+            }
             try{
-                this.objectNames.put(name, creator.create(parameters));
+                this.registeredObjects.put(name, creator.create(parameters));
             }catch(DependencyException ex){
             }
         }
