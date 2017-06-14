@@ -6,7 +6,6 @@
 package simple;
 
 import common.DependencyException;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -17,6 +16,7 @@ public class Container implements Injector {
     
     private HashMap<String,Object> registeredObjects;
     
+    
     public Container(){
         this.registeredObjects = new HashMap<>();
     }
@@ -26,7 +26,7 @@ public class Container implements Injector {
         if (this.registeredObjects.containsKey(name)){
             throw new DependencyException(name + " constant is already registered.");
         } else{
-            this.registeredObjects.put(name, value); System.out.println("Key " + name + " registered with value " + value);
+            this.registeredObjects.put(name, value); System.out.println("Key '" + name + "' registered with value '" + value + "' ");
         }
     }
 
@@ -45,13 +45,16 @@ public class Container implements Injector {
         if (this.registeredObjects.containsKey(name)){
             throw new DependencyException(name + " factory is already registered.");
         }else{
-            ArrayList params = new ArrayList();
-            for( String parameter:parameters ){
-                params.add(this.getObject(parameter));
-            }
-            System.out.println("Trying to register a factory with name: " + name + " and value/s " + params);
             try{
-                this.registeredObjects.put(name, creator.create(params)); System.out.println("No errory when trying to register a factory");
+                if (parameters.length == 1){
+                    this.registeredObjects.put(name, creator.create(this.getObject(parameters[0])));
+                    System.out.println("Succesfull Factory register '" + name + "' with two items in parameters '" + parameters[0] + "'");
+                }
+                else{
+                    this.registeredObjects.put(name, creator.create(this.getObject(parameters[0]), this.getObject(parameters[1])));
+                    System.out.println("Succesfull Factory register with one item in parameters");                    
+                }
+                
             }catch(DependencyException ex){ System.err.println("Error when triyng to register a factory");
             }
         }

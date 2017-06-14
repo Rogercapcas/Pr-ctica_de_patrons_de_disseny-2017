@@ -15,21 +15,49 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import org.junit.Test;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.CoreMatchers.is;
 /**
  *
  * @author roger
  */
 public class FirstTest {
     @Test    
-    public void pdfTest() throws DependencyException{
+    public void Test0() throws DependencyException{
+        System.out.println("************ Starting Test0 ************");
         Injector injector = new Container() ;
         injector.registerConstant("I", 42);
         injector.registerFacotry("D", new FactoryD1(), "I");
-        System.out.println("********");
         InterfaceD d = (InterfaceD) injector.getObject("D");
         assertThat(d, is(instanceOf(ImplementationD1.class)));
         ImplementationD1 d1 = (ImplementationD1) d;
         assertThat(d1.i, is(42));
+        System.out.println("************ End of Test0 **************");
+        System.out.println("");
+    }
+    
+    @Test    
+    public void Test1() throws DependencyException{
+        System.out.println("************ Starting Test1 ************");
+        Injector injector = new Container();
+        injector.registerConstant("I", 42);
+        injector.registerConstant("S", "patata");
+        injector.registerFacotry("D", new FactoryD1(), "I");
+        injector.registerFacotry("C", new FactoryC1(), "S");
+        InterfaceD d = (InterfaceD) injector.getObject("D");
+        InterfaceC c = (InterfaceC) injector.getObject("C");
+        assertThat(d, is(instanceOf(ImplementationD1.class)));
+        assertThat(c, is(instanceOf(ImplementationC1.class)));
+        ImplementationD1 d1 = (ImplementationD1) d;
+        ImplementationC1 c1 = (ImplementationC1) c;
+        assertThat(d1.i, is(42));
+        assertThat(c1.s, is("patata"));
+        System.out.println("************ End of Test1 **************");
+        System.out.println("");
     }
     
     
