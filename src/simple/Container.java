@@ -26,7 +26,7 @@ public class Container implements Injector {
         if (this.registeredObjects.containsKey(name)){
             throw new DependencyException(name + " constant is already registered.");
         } else{
-            this.registeredObjects.put(name, value);
+            this.registeredObjects.put(name, value); System.out.println("Key " + name + " registered with value " + value);
         }
     }
 
@@ -34,9 +34,9 @@ public class Container implements Injector {
     public Object getObject(String name) throws DependencyException {
         if (this.registeredObjects.containsKey(name)){
             return this.registeredObjects.get(name);
-        }
-        throw new DependencyException(name + " doesn't exists.");
-        
+        }else{
+            throw new DependencyException(name + " doesn't exists.");
+        }        
     }
     
     @Override
@@ -49,9 +49,10 @@ public class Container implements Injector {
             for( String parameter:parameters ){
                 params.add(this.getObject(parameter));
             }
+            System.out.println("Trying to register a factory with name: " + name + " and value/s " + params);
             try{
-                this.registeredObjects.put(name, creator.create(params));
-            }catch(DependencyException ex){
+                this.registeredObjects.put(name, creator.create(params)); System.out.println("No errory when trying to register a factory");
+            }catch(DependencyException ex){ System.err.println("Error when triyng to register a factory");
             }
         }
     }

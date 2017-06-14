@@ -7,20 +7,25 @@ package simpleTests;
 
 import Classes_Interfaces_And_Factories.*;
 import common.*;
+import simple.*;
+import simple.Container;
+import simple.Injector;
+
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import simple.*;
+import org.junit.Test;
 /**
  *
  * @author roger
  */
 public class FirstTest {
-    
+    @Test    
     public void pdfTest() throws DependencyException{
         Injector injector = new Container() ;
         injector.registerConstant("I", 42);
         injector.registerFacotry("D", new FactoryD1(), "I");
+        System.out.println("********");
         InterfaceD d = (InterfaceD) injector.getObject("D");
         assertThat(d, is(instanceOf(ImplementationD1.class)));
         ImplementationD1 d1 = (ImplementationD1) d;

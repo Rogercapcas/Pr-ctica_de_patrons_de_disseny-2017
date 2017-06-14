@@ -18,8 +18,11 @@ public class FactoryD1 implements Factory {
     public ImplementationD1 create(Object... parameters) throws DependencyException {
         int i;
         try{
+            System.out.println("Before int cast --> " + parameters[0]);
             i = (int) parameters[0];
+            System.out.println("Successful parameters to int cast " + i);
         }catch (ClassCastException | ArrayIndexOutOfBoundsException ex){
+            System.err.println("Error trying to cast parameters to int");
             throw new DependencyException(ex);
         }
         return new ImplementationD1(i);
