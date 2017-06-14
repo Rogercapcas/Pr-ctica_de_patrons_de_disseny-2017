@@ -15,10 +15,13 @@ import java.util.HashMap;
 public class Container implements Injector {
     
     private HashMap<String,Object> registeredObjects;
-    
+    private HashMap<String,Object> FactoriesMap;
+    private HashMap<String,Object> dependencesMap;
     
     public Container(){
         this.registeredObjects = new HashMap<>();
+        this.FactoriesMap = new HashMap<>();
+        this.dependencesMap = new HashMap<>();
     }
 
     @Override
@@ -34,7 +37,13 @@ public class Container implements Injector {
     public Object getObject(String name) throws DependencyException {
         if (this.registeredObjects.containsKey(name)){
             return this.registeredObjects.get(name);
-        }else{
+        }
+        else if(this.FactoriesMap.containsKey(name)){
+            Factory creator;
+            creator = (Factory) this.FactoriesMap.get(name);
+            return creator.create(this.dependencesMap.get(name));
+        }
+        else{
             throw new DependencyException(name + " doesn't exists.");
         }        
     }
@@ -45,18 +54,8 @@ public class Container implements Injector {
         if (this.registeredObjects.containsKey(name)){
             throw new DependencyException(name + " factory is already registered.");
         }else{
-            try{
-                if (parameters.length == 1){
-                    this.registeredObjects.put(name, creator.create(this.getObject(parameters[0])));
-                    System.out.println("Succesfull Factory register '" + name + "' with two items in parameters '" + parameters[0] + "'");
-                }
-                else{
-                    this.registeredObjects.put(name, creator.create(this.getObject(parameters[0]), this.getObject(parameters[1])));
-                    System.out.println("Succesfull Factory register with one item in parameters");                    
-                }
-                
-            }catch(DependencyException ex){ System.err.println("Error when triyng to register a factory");
-            }
+            this.FactoriesMap.put(name, creator);
+            this.dependencesMap.put(name, parameters);
         }
     }
 }
