@@ -7,8 +7,10 @@ package simpleTests;
 
 import Classes_Interfaces_And_Factories.*;
 import common.*;
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 import simple.*;
-
 /**
  *
  * @author roger
