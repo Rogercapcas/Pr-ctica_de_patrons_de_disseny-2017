@@ -80,12 +80,41 @@ public class FirstTest {
         ImplementationB1 b1 = (ImplementationB1) b;
         assertThat(d1.i, is(42));
         assertThat(c1.s, is("patata"));
-        //assertThat(b1.d, is(d1));
+        assertThat(b1.d, is(instanceOf(ImplementationD1.class)));
         System.out.println("************ End of Test2 **************");
-        System.out.println(" ");
+        System.out.println("");
     }
     
-    
+    @Test    
+    public void Test3() throws DependencyException{
+        System.out.println("************ Starting Test3 ************");
+        Injector injector = new Container();
+        injector.registerConstant("I", 42);
+        injector.registerConstant("S", "patata");
+        injector.registerFacotry("D", new FactoryD1(), "I");
+        injector.registerFacotry("C", new FactoryC1(), "S");
+        injector.registerFacotry("B", new FactoryB1(), "D");
+        injector.registerFacotry("A", new FactoryA1(), "B","C");
+        InterfaceD d = (InterfaceD) injector.getObject("D");
+        InterfaceC c = (InterfaceC) injector.getObject("C");
+        InterfaceB b = (InterfaceB) injector.getObject("B");
+        InterfaceA a = (InterfaceA) injector.getObject("A");
+        assertThat(d, is(instanceOf(ImplementationD1.class)));
+        assertThat(c, is(instanceOf(ImplementationC1.class)));
+        assertThat(b, is(instanceOf(ImplementationB1.class)));
+        assertThat(a, is(instanceOf(ImplementationA1.class)));
+        ImplementationD1 d1 = (ImplementationD1) d;
+        ImplementationC1 c1 = (ImplementationC1) c;
+        ImplementationB1 b1 = (ImplementationB1) b;
+        ImplementationA1 a1 = (ImplementationA1) a;
+        assertThat(d1.i, is(42));
+        assertThat(c1.s, is("patata"));
+        assertThat(b1.d, is(instanceOf(ImplementationD1.class)));
+        assertThat(a1.b, is(instanceOf(ImplementationB1.class)));
+        assertThat(a1.c, is(instanceOf(ImplementationC1.class)));
+        System.out.println("************ End of Test3 **************");
+        System.out.println("");
+    }
     
     
     

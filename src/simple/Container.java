@@ -16,8 +16,8 @@ import java.util.HashMap;
 public class Container implements Injector {
     
     private HashMap<String,Object> registeredObjects;
-    private HashMap<String,Object> FactoriesMap;
-    private HashMap<String,ArrayList<String>> dependencesMap;
+    private HashMap<String,Factory> FactoriesMap;
+    private HashMap<String,String[]> dependencesMap;
     
     public Container(){
         this.registeredObjects = new HashMap<>();
@@ -45,11 +45,7 @@ public class Container implements Injector {
             this.FactoriesMap.put(name, creator);
             System.out.println("Successfull factory register with FactoryName: '" + name + "'");
             System.out.println("Trying to register a factory dependences with FactoryName: " + name + " and value/s " + parameters[0]);
-            ArrayList<String> params = new ArrayList<>();
-            for (String item:parameters){
-                params.add(item);
-            }
-            this.dependencesMap.put(name, params);
+            this.dependencesMap.put(name, parameters);
         }
     }
     
@@ -60,22 +56,15 @@ public class Container implements Injector {
         }
         else if(this.FactoriesMap.containsKey(name)){
             Factory creator;
-            creator = (Factory) this.FactoriesMap.get(name);
-            System.out.println("Getting '" + name + "' from dependencesMap. Result is: '" + this.dependencesMap.get(name).get(0) + "'");
-            ArrayList<String> dependences = this.dependencesMap.get(name);
-            if (dependences.size() == 1){
-                return creator.create(this.getObject(dependences.get(0)));
+            creator = this.FactoriesMap.get(name);
+            Object[] str1 = new Object[this.dependencesMap.get(name).length];
+            for (int i=0; i<this.dependencesMap.get(name).length; i++){
+                str1[i] = this.getObject(this.dependencesMap.get(name)[i]);
             }
-            else if (dependences.size() == 2){
-                return creator.create(this.getObject(dependences.get(0)), this.getObject(dependences.get(1)));
-            }
-            else{
-                throw new DependencyException(name + " Factory has some problem in its dependences list.");
-            }
-            
+            return creator.create(str1);            
         }
         else{
-            throw new DependencyException(name + " has not been registered. ");
+            throw new DependencyException(name + " has not been registered.");
         }        
     }
 }
