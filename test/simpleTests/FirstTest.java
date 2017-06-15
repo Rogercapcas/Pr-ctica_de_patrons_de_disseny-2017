@@ -82,7 +82,7 @@ public class FirstTest {
         assertThat(c1.s, is("patata"));
         //assertThat(b1.d, is(d1));
         System.out.println("************ End of Test2 **************");
-        System.out.println("");
+        System.out.println(" ");
     }
     
     

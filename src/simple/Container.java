@@ -75,7 +75,7 @@ public class Container implements Injector {
             
         }
         else{
-            throw new DependencyException(name + " has not been registered.");
+            throw new DependencyException(name + " has not been registered. ");
         }        
     }
 }
