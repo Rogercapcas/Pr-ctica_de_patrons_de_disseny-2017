@@ -20,7 +20,7 @@ public class FactoryD1 implements Factory {
         try{
             i = (int) parameters[0];
         }catch (ClassCastException | ArrayIndexOutOfBoundsException ex){
-            System.err.println("Error trying to cast parameters to int");
+            System.err.println("ERROR: Something went wrong when trying to create a instance of ImplementationD1.");
             throw new DependencyException(ex);
         }
         return new ImplementationD1(i);
