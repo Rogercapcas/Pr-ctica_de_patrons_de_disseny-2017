@@ -6,6 +6,7 @@
 package simple;
 
 import common.DependencyException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -16,7 +17,7 @@ public class Container implements Injector {
     
     private HashMap<String,Object> registeredObjects;
     private HashMap<String,Object> FactoriesMap;
-    private HashMap<String,Object> dependencesMap;
+    private HashMap<String,ArrayList<String>> dependencesMap;
     
     public Container(){
         this.registeredObjects = new HashMap<>();
@@ -40,9 +41,15 @@ public class Container implements Injector {
         if (this.registeredObjects.containsKey(name)){
             throw new DependencyException(name + " factory is already registered.");
         }else{
-            System.out.println("Trying to register a factory with name: " + name + " and value/s " + parameters);
+            System.out.println("Trying to register a factory with name: " + name + " and value/s " + creator);
             this.FactoriesMap.put(name, creator);
-            this.dependencesMap.put(name, parameters);
+            System.out.println("Successfull factory register with FactoryName: '" + name + "'");
+            System.out.println("Trying to register a factory dependences with FactoryName: " + name + " and value/s " + parameters[0]);
+            ArrayList<String> params = new ArrayList<>();
+            for (String item:parameters){
+                params.add(item);
+            }
+            this.dependencesMap.put(name, params);
         }
     }
     
@@ -54,10 +61,21 @@ public class Container implements Injector {
         else if(this.FactoriesMap.containsKey(name)){
             Factory creator;
             creator = (Factory) this.FactoriesMap.get(name);
-            return creator.create(this.dependencesMap.get(this.registeredObjects.get(name)));
+            System.out.println("Getting '" + name + "' from dependencesMap. Result is: '" + this.dependencesMap.get(name).get(0) + "'");
+            ArrayList<String> dependences = this.dependencesMap.get(name);
+            if (dependences.size() == 1){
+                return creator.create(this.getObject(dependences.get(0)));
+            }
+            else if (dependences.size() == 2){
+                return creator.create(this.getObject(dependences.get(0)), this.getObject(dependences.get(1)));
+            }
+            else{
+                throw new DependencyException(name + " Factory has some problem in its dependences list.");
+            }
+            
         }
         else{
-            throw new DependencyException(name + " doesn't exists.");
+            throw new DependencyException(name + " has not been registered.");
         }        
     }
 }
