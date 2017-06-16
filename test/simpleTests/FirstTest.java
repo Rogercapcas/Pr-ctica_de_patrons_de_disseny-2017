@@ -89,17 +89,13 @@ public class FirstTest {
     @Test(expected = DependencyException.class)    
     public void Test4() throws DependencyException{
         System.out.println("************ Starting Test4 ************");
-        System.out.println("Testing FactoryA1 is NOT correctly registeret and try to get an instance of it.");
+        System.out.println("Testing cration a FactoryA1 instance without a constant needed.");
         Injector injector = new Container();
         injector.registerConstant("S", "patata");
         injector.registerFacotry("C", new FactoryC1(), "S");
         injector.registerFacotry("B", new FactoryB1(), "D");
         injector.registerFacotry("A", new FactoryA1(), "B","C");
         InterfaceA a = (InterfaceA) injector.getObject("A");
-        assertThat(a, is(instanceOf(ImplementationA1.class)));
-        ImplementationA1 a1 = (ImplementationA1) a;
-        assertThat(a1.b, is(instanceOf(ImplementationB1.class)));
-        assertThat(a1.c, is(instanceOf(ImplementationC1.class)));
         System.out.println("************ End of Test4 **************");
         System.out.println("");
     }
@@ -107,7 +103,7 @@ public class FirstTest {
     @Test(expected = DependencyException.class)    
     public void Test5() throws DependencyException{
         System.out.println("************ Starting Test5 ************");
-        System.out.println("Testing FactoryB1 is NOT correctly created with bad arguments.");
+        System.out.println("Testing cration a FactoryB1 instance with bad arguments.");
         Injector injector = new Container();
         injector.registerConstant("I", 42);
         injector.registerConstant("S", "patata");
@@ -122,13 +118,13 @@ public class FirstTest {
     @Test(expected = DependencyException.class)    
     public void Test6() throws DependencyException{
         System.out.println("************ Starting Test6 ************");
-        System.out.println("Testing FactoryB1 is NOT correctly created with bad arguments.");
+        System.out.println("Testing cration a FactoryA1 instance with bad arguments.");
         Injector injector = new Container();
         injector.registerConstant("I", 42);
         injector.registerConstant("S", "patata");
         injector.registerFacotry("D", new FactoryD1(), "I");
         injector.registerFacotry("A", new FactoryA1(), "I", "S");
-        InterfaceA b = (InterfaceA) injector.getObject("A");
+        InterfaceA a = (InterfaceA) injector.getObject("A");
         System.out.println("************ End of Test6 **************");
         System.out.println("");
     }
@@ -161,7 +157,7 @@ public class FirstTest {
     @Test(expected = DependencyException.class)    
     public void Test9() throws DependencyException{
         System.out.println("************ Starting Test9 ************");
-        System.out.println("Testing FactoryD1 is correctly registeret and get a instance of it.");
+        System.out.println("Testing FactoryD1 is correctly registeret but not with correct arguments and trying to get a instance of it.");
         Injector injector = new Container();
         String[] str = {"patata", "poma", "GEIADE"};
         injector.registerConstant("I", str);
