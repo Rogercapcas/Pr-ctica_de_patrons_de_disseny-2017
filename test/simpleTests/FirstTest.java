@@ -5,7 +5,10 @@
  */
 package simpleTests;
 
-import Classes_Interfaces_And_Factories.*;
+import Interfaces1.InterfaceA;
+import Interfaces1.*;
+import Implementation1.*;
+import Factories1.*;
 import common.*;
 import simple.Container;
 import simple.Injector;

@@ -3,8 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Classes_Interfaces_And_Factories;
+package Factories1;
 
+import Implementation1.ImplementationA1;
+import Implementation1.ImplementationB1;
+import Implementation1.ImplementationC1;
+import Interfaces1.InterfaceB;
+import Interfaces1.InterfaceC;
 import common.DependencyException;
 import simple.Factory;
 
