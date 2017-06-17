@@ -64,7 +64,6 @@ public class ContainerTest {
         injector.registerConstant(Integer.class, 42);
         injector.registerFactory(InterfaceD.class, new FactoryD1(), Integer.class);
         injector.registerFactory(InterfaceB.class, new FactoryB1(), InterfaceD.class);
-        InterfaceD d = (InterfaceD) injector.getObject(InterfaceD.class);
         InterfaceB b = (InterfaceB) injector.getObject(InterfaceB.class);
         assertThat(b, is(instanceOf(ImplementationB1.class)));
         ImplementationB1 b1 = (ImplementationB1) b;
@@ -96,6 +95,7 @@ public class ContainerTest {
         System.out.println("************ Starting Test4 ************");
         System.out.println("Testing cration a FactoryA1 instance without a constant needed.");
         injector.registerConstant(String.class, "patata");
+        injector.registerFactory(InterfaceD.class, new FactoryD1(), Integer.class);
         injector.registerFactory(InterfaceC.class, new FactoryC1(), String.class);
         injector.registerFactory(InterfaceB.class, new FactoryB1(), InterfaceD.class);
         injector.registerFactory(InterfaceA.class, new FactoryA1(), InterfaceB.class,InterfaceC.class);
@@ -120,7 +120,6 @@ public class ContainerTest {
         System.out.println("************ Starting Test6 ************");
         System.out.println("Testing cration a complex FactoryA1 instance with bad arguments.");
         registConstances();
-        injector.registerFactory(InterfaceD.class, new FactoryD1(), Integer.class);
         injector.registerFactory(InterfaceA.class, new FactoryA1(), Integer.class, String.class);
         InterfaceA a = (InterfaceA) injector.getObject(InterfaceA.class);
         System.out.println("************ End of Test6 **************");
@@ -141,8 +140,6 @@ public class ContainerTest {
     public void registerTwoTimesSameFactory() throws DependencyException{
         System.out.println("************ Starting Test8 ************");
         System.out.println("Testing to register two times the same factory.");
-        registConstances();
-        injector.registerFactory(InterfaceD.class, new FactoryD1(), Integer.class);
         injector.registerFactory(InterfaceB.class, new FactoryB1(), InterfaceD.class);
         injector.registerFactory(InterfaceB.class, new FactoryB1(), InterfaceD.class);
         System.out.println("************ End of Test8 **************");

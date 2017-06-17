@@ -64,7 +64,6 @@ public class ContainerTest {
         injector.registerConstant("I", 42);
         injector.registerFactory("D", new FactoryD1(), "I");
         injector.registerFactory("B", new FactoryB1(), "D");
-        InterfaceD d = (InterfaceD) injector.getObject("D");
         InterfaceB b = (InterfaceB) injector.getObject("B");
         assertThat(b, is(instanceOf(ImplementationB1.class)));
         ImplementationB1 b1 = (ImplementationB1) b;
@@ -96,6 +95,7 @@ public class ContainerTest {
         System.out.println("************ Starting Test4 ************");
         System.out.println("Testing cration a FactoryA1 instance without a constant needed.");
         injector.registerConstant("S", "patata");
+        injector.registerFactory("D", new FactoryD1(), "I");
         injector.registerFactory("C", new FactoryC1(), "S");
         injector.registerFactory("B", new FactoryB1(), "D");
         injector.registerFactory("A", new FactoryA1(), "B","C");
@@ -120,7 +120,6 @@ public class ContainerTest {
         System.out.println("************ Starting Test6 ************");
         System.out.println("Testing cration a FactoryA1 instance with bad arguments.");
         registConstances();
-        injector.registerFactory("D", new FactoryD1(), "I");
         injector.registerFactory("A", new FactoryA1(), "I", "S");
         InterfaceA a = (InterfaceA) injector.getObject("A");
         System.out.println("************ End of Test6 **************");
@@ -142,7 +141,6 @@ public class ContainerTest {
         System.out.println("************ Starting Test8 ************");
         System.out.println("Testing to register two times the same factory.");
         registConstances();
-        injector.registerFactory("D", new FactoryD1(), "I");
         injector.registerFactory("B", new FactoryB1(), "D");
         injector.registerFactory("B", new FactoryB1(), "D");
         System.out.println("************ End of Test8 **************");
