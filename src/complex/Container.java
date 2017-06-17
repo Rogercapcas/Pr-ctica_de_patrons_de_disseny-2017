@@ -17,7 +17,7 @@ public class Container implements Injector {
     private HashMap<Class,Object> registeredObjects;
     private HashMap<Class,complex.Factory> FactoriesMap;
     private HashMap<Class,Class[]> dependencesMap;
-    private boolean DEBUG = true;
+    private boolean DEBUG = false;
     
     public Container(){
         this.registeredObjects = new HashMap<>();
