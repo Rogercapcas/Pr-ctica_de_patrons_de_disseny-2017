@@ -3,12 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Interfaces1;
+package Implementation;
+
+import Interfaces.InterfaceD;
 
 /**
  *
  * @author roger
  */
-public interface InterfaceC {
+public class ImplementationD1 implements InterfaceD{
     
+    public int i;
+    
+    public ImplementationD1(int i){
+        this.i = i;
+    }
 }

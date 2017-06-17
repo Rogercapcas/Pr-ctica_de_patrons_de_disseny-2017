@@ -5,7 +5,7 @@
  */
 package Factories1;
 
-import Implementation1.ImplementationD1;
+import Implementation.ImplementationD1;
 import common.DependencyException;
 import simple.Factory;
 

@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Implementation1;
+package Implementation;
 
-import Interfaces1.InterfaceA;
-import Interfaces1.InterfaceB;
-import Interfaces1.InterfaceC;
+import Interfaces.InterfaceA;
+import Interfaces.InterfaceB;
+import Interfaces.InterfaceC;
 
 /**
  *

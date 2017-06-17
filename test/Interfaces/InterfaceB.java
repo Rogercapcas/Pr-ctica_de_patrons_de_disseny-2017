@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Interfaces1;
+package Interfaces;
 
 /**
  *
  * @author roger
  */
-public interface InterfaceD {
+public interface InterfaceB {
     
 }

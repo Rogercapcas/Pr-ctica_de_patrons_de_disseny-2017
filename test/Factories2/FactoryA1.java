@@ -5,11 +5,11 @@
  */
 package Factories2;
 
-import Implementation1.ImplementationA1;
-import Implementation1.ImplementationB1;
-import Implementation1.ImplementationC1;
-import Interfaces1.InterfaceB;
-import Interfaces1.InterfaceC;
+import Implementation.ImplementationA1;
+import Implementation.ImplementationB1;
+import Implementation.ImplementationC1;
+import Interfaces.InterfaceB;
+import Interfaces.InterfaceC;
 import common.DependencyException;
 import complex.Factory;
 

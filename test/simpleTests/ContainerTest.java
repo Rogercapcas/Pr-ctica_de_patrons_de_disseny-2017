@@ -5,34 +5,30 @@
  */
 package simpleTests;
 
-import Interfaces1.InterfaceA;
-import Interfaces1.*;
-import Implementation1.*;
-import Factories1.*;
 import common.*;
-import simple.Container;
-import simple.Injector;
+import simple.*;
+import Factories1.*;
+import Implementation.*;
+import Interfaces.*;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
-import org.junit.Test;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 import org.junit.Before;
+import org.junit.Test;
 /**
  *
  * @author roger
  */
-public class FirstTest {
+public class ContainerTest {
     
     private Injector injector;
     
     @Before
     public void FirstTest(){
-        
         injector = new Container();
     }
-    
-    
+        
     @Test    
     public void getInstanceOfFactoryD1() throws DependencyException{
         System.out.println("************ Starting Test0 ************");
@@ -113,9 +109,7 @@ public class FirstTest {
         System.out.println("************ Starting Test5 ************");
         System.out.println("Testing cration a FactoryB1 instance with bad arguments.");
         registConstances();
-        injector.registerFactory("D", new FactoryD1(), "I");
         injector.registerFactory("B", new FactoryB1(), "S");
-        injector.registerFactory("A", new FactoryA1(), "I", "S");
         InterfaceB b = (InterfaceB) injector.getObject("B");
         System.out.println("************ End of Test5 **************");
         System.out.println("");
@@ -150,7 +144,7 @@ public class FirstTest {
         registConstances();
         injector.registerFactory("D", new FactoryD1(), "I");
         injector.registerFactory("B", new FactoryB1(), "D");
-        injector.registerFactory("B", new FactoryB1(), "I");
+        injector.registerFactory("B", new FactoryB1(), "D");
         System.out.println("************ End of Test8 **************");
         System.out.println("");
     }
@@ -169,7 +163,7 @@ public class FirstTest {
     
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-///////////////////////////    Auxiliar methods    /////////////////////////////
+///////////////////////////     Auxiliar method    /////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
   
@@ -177,7 +171,4 @@ public class FirstTest {
         injector.registerConstant("I", 42);
         injector.registerConstant("S", "patata");
     }
-    
-    
-    
 }

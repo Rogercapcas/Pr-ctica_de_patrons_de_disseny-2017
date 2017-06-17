@@ -5,9 +5,9 @@
  */
 package Factories2;
 
-import Implementation1.ImplementationB1;
-import Implementation1.ImplementationD1;
-import Interfaces1.InterfaceD;
+import Implementation.ImplementationB1;
+import Implementation.ImplementationD1;
+import Interfaces.InterfaceD;
 import common.DependencyException;
 import complex.Factory;
 

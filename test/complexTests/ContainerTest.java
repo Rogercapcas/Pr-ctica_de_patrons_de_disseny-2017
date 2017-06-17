@@ -5,21 +5,17 @@
  */
 package complexTests;
 
-import Factories2.*;
-import Implementation1.*;
-import Interfaces1.*;
-import common.DependencyException;
+import common.*;
 import complex.*;
+import Factories2.*;
+import Implementation.*;
+import Interfaces.*;
+
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
-
 /**
  *
  * @author roger
@@ -30,10 +26,8 @@ public class ContainerTest {
     
     @Before
     public void ContainerTest(){
-        
         injector = new complex.Container();
     }
-    
     
     @Test    
     public void getInstanceOfFactoryD1() throws DependencyException{
@@ -115,9 +109,7 @@ public class ContainerTest {
         System.out.println("************ Starting Test5 ************");
         System.out.println("Testing cration a FactoryB1 instance with bad arguments.");
         registConstances();
-        injector.registerFactory(InterfaceD.class, new FactoryD1(), Integer.class);
         injector.registerFactory(InterfaceB.class, new FactoryB1(), String.class);
-        injector.registerFactory(InterfaceA.class, new FactoryA1(), Integer.class, String.class);
         InterfaceB b = (InterfaceB) injector.getObject(InterfaceB.class);
         System.out.println("************ End of Test5 **************");
         System.out.println("");
@@ -126,7 +118,7 @@ public class ContainerTest {
     @Test(expected = DependencyException.class)    
     public void creationFactoryA1withBadArguments() throws DependencyException{
         System.out.println("************ Starting Test6 ************");
-        System.out.println("Testing cration a FactoryA1 instance with bad arguments.");
+        System.out.println("Testing cration a complex FactoryA1 instance with bad arguments.");
         registConstances();
         injector.registerFactory(InterfaceD.class, new FactoryD1(), Integer.class);
         injector.registerFactory(InterfaceA.class, new FactoryA1(), Integer.class, String.class);
@@ -152,14 +144,14 @@ public class ContainerTest {
         registConstances();
         injector.registerFactory(InterfaceD.class, new FactoryD1(), Integer.class);
         injector.registerFactory(InterfaceB.class, new FactoryB1(), InterfaceD.class);
-        injector.registerFactory(InterfaceB.class, new FactoryB1(), Integer.class);
+        injector.registerFactory(InterfaceB.class, new FactoryB1(), InterfaceD.class);
         System.out.println("************ End of Test8 **************");
         System.out.println("");
     }
     
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-///////////////////////////    Auxiliar methods    /////////////////////////////
+///////////////////////////     Auxiliar method    /////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
   
@@ -167,5 +159,4 @@ public class ContainerTest {
         injector.registerConstant(Integer.class, 42);
         injector.registerConstant(String.class, "patata");
     }
-    
 }
