@@ -38,7 +38,7 @@ public class Container implements Injector {
     }
 
     @Override
-    public void registerFacotry(String name, Factory creator, String... parameters) throws DependencyException{
+    public void registerFactory(String name, Factory creator, String... parameters) throws DependencyException{
         
         if (this.FactoriesMap.containsKey(name)){
             if (DEBUG) System.err.println("ERROR: '" + name + "' factory is already registered.");
