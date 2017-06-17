@@ -14,18 +14,28 @@ import static org.hamcrest.CoreMatchers.instanceOf;
 import org.junit.Test;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.CoreMatchers.is;
+import org.junit.Before;
 /**
  *
  * @author roger
  */
 public class FirstTest {
+    
+    private Injector injector;
+    
+    @Before
+    public void FirstTest(){
+        
+        injector = new Container();
+    }
+    
+    
     @Test    
-    public void Test0() throws DependencyException{
+    public void getInstanceOfFactoryD1() throws DependencyException{
         System.out.println("************ Starting Test0 ************");
-        System.out.println("Testing FactoryD1 is correctly registeret and get a instance of it.");
-        Injector injector = new Container() ;
+        System.out.println("Testing FactoryD1 is correctly registered and get a instance of it.");
         injector.registerConstant("I", 42);
-        injector.registerFacotry("D", new FactoryD1(), "I");
+        injector.registerFactory("D", new FactoryD1(), "I");
         InterfaceD d = (InterfaceD) injector.getObject("D");
         assertThat(d, is(instanceOf(ImplementationD1.class)));
         ImplementationD1 d1 = (ImplementationD1) d;
@@ -35,12 +45,11 @@ public class FirstTest {
     }
     
     @Test    
-    public void Test1() throws DependencyException{
+    public void getInstanceOfFactoryC1() throws DependencyException{
         System.out.println("************ Starting Test1 ************");
-        System.out.println("Testing FactoryC1 is correctly registeret and get a instance of it.");
-        Injector injector = new Container();
+        System.out.println("Testing FactoryC1 is correctly registered and get a instance of it.");
         injector.registerConstant("S", "patata");
-        injector.registerFacotry("C", new FactoryC1(), "S");
+        injector.registerFactory("C", new FactoryC1(), "S");
         InterfaceC c = (InterfaceC) injector.getObject("C");
         assertThat(c, is(instanceOf(ImplementationC1.class)));
         ImplementationC1 c1 = (ImplementationC1) c;
@@ -50,13 +59,12 @@ public class FirstTest {
     }
     
     @Test    
-    public void Test2() throws DependencyException{
+    public void getInstaceOfFactoryB1() throws DependencyException{
         System.out.println("************ Starting Test2 ************");
-        System.out.println("Testing FactoryB1 is correctly registeret and get a instance of it.");
-        Injector injector = new Container();
+        System.out.println("Testing FactoryB1 is correctly registered and get a instance of it.");
         injector.registerConstant("I", 42);
-        injector.registerFacotry("D", new FactoryD1(), "I");
-        injector.registerFacotry("B", new FactoryB1(), "D");
+        injector.registerFactory("D", new FactoryD1(), "I");
+        injector.registerFactory("B", new FactoryB1(), "D");
         InterfaceD d = (InterfaceD) injector.getObject("D");
         InterfaceB b = (InterfaceB) injector.getObject("B");
         assertThat(b, is(instanceOf(ImplementationB1.class)));
@@ -66,17 +74,15 @@ public class FirstTest {
         System.out.println("");
     }
     
-    @Test    
-    public void Test3() throws DependencyException{
+    @Test  
+    public void getInstanceOfFactoryA1() throws DependencyException{
         System.out.println("************ Starting Test3 ************");
-        System.out.println("Testing FactoryA1 is correctly registeret and get a instance of it.");
-        Injector injector = new Container();
-        injector.registerConstant("I", 42);
-        injector.registerConstant("S", "patata");
-        injector.registerFacotry("D", new FactoryD1(), "I");
-        injector.registerFacotry("C", new FactoryC1(), "S");
-        injector.registerFacotry("B", new FactoryB1(), "D");
-        injector.registerFacotry("A", new FactoryA1(), "B","C");
+        System.out.println("Testing FactoryA1 is correctly registered and get a instance of it.");
+        registConstances();
+        injector.registerFactory("D", new FactoryD1(), "I");
+        injector.registerFactory("C", new FactoryC1(), "S");
+        injector.registerFactory("B", new FactoryB1(), "D");
+        injector.registerFactory("A", new FactoryA1(), "B","C");
         InterfaceA a = (InterfaceA) injector.getObject("A");
         assertThat(a, is(instanceOf(ImplementationA1.class)));
         ImplementationA1 a1 = (ImplementationA1) a;
@@ -87,84 +93,88 @@ public class FirstTest {
     }
     
     @Test(expected = DependencyException.class)    
-    public void Test4() throws DependencyException{
+    public void creationFactoryA1WithoutConstant() throws DependencyException{
         System.out.println("************ Starting Test4 ************");
         System.out.println("Testing cration a FactoryA1 instance without a constant needed.");
-        Injector injector = new Container();
         injector.registerConstant("S", "patata");
-        injector.registerFacotry("C", new FactoryC1(), "S");
-        injector.registerFacotry("B", new FactoryB1(), "D");
-        injector.registerFacotry("A", new FactoryA1(), "B","C");
+        injector.registerFactory("C", new FactoryC1(), "S");
+        injector.registerFactory("B", new FactoryB1(), "D");
+        injector.registerFactory("A", new FactoryA1(), "B","C");
         InterfaceA a = (InterfaceA) injector.getObject("A");
         System.out.println("************ End of Test4 **************");
         System.out.println("");
     }
     
     @Test(expected = DependencyException.class)    
-    public void Test5() throws DependencyException{
+    public void creationFactoryB1WithBadArguments() throws DependencyException{
         System.out.println("************ Starting Test5 ************");
         System.out.println("Testing cration a FactoryB1 instance with bad arguments.");
-        Injector injector = new Container();
-        injector.registerConstant("I", 42);
-        injector.registerConstant("S", "patata");
-        injector.registerFacotry("D", new FactoryD1(), "I");
-        injector.registerFacotry("B", new FactoryB1(), "S");
-        injector.registerFacotry("A", new FactoryA1(), "I", "S");
+        registConstances();
+        injector.registerFactory("D", new FactoryD1(), "I");
+        injector.registerFactory("B", new FactoryB1(), "S");
+        injector.registerFactory("A", new FactoryA1(), "I", "S");
         InterfaceB b = (InterfaceB) injector.getObject("B");
         System.out.println("************ End of Test5 **************");
         System.out.println("");
     }
     
     @Test(expected = DependencyException.class)    
-    public void Test6() throws DependencyException{
+    public void creationFactoryA1withBadArguments() throws DependencyException{
         System.out.println("************ Starting Test6 ************");
         System.out.println("Testing cration a FactoryA1 instance with bad arguments.");
-        Injector injector = new Container();
-        injector.registerConstant("I", 42);
-        injector.registerConstant("S", "patata");
-        injector.registerFacotry("D", new FactoryD1(), "I");
-        injector.registerFacotry("A", new FactoryA1(), "I", "S");
+        registConstances();
+        injector.registerFactory("D", new FactoryD1(), "I");
+        injector.registerFactory("A", new FactoryA1(), "I", "S");
         InterfaceA a = (InterfaceA) injector.getObject("A");
         System.out.println("************ End of Test6 **************");
         System.out.println("");
     }
     
     @Test(expected = DependencyException.class)    
-    public void Test7() throws DependencyException{
+    public void registerTwoTimesSameConstant() throws DependencyException{
         System.out.println("************ Starting Test7 ************");
         System.out.println("Testing to register two times the same constant.");
-        Injector injector = new Container();
-        injector.registerConstant("I", 42);
-        injector.registerConstant("I", 4);
+        registConstances();
+        registConstances();
         System.out.println("************ End of Test7 **************");
         System.out.println("");
     }
     
     @Test(expected = DependencyException.class)    
-    public void Test8() throws DependencyException{
+    public void registerTwoTimesSameFactory() throws DependencyException{
         System.out.println("************ Starting Test8 ************");
         System.out.println("Testing to register two times the same factory.");
-        Injector injector = new Container();
-        injector.registerConstant("I", 42);
-        injector.registerConstant("S", "patata");
-        injector.registerFacotry("D", new FactoryD1(), "I");
-        injector.registerFacotry("B", new FactoryB1(), "D");
-        injector.registerFacotry("B", new FactoryB1(), "I");
+        registConstances();
+        injector.registerFactory("D", new FactoryD1(), "I");
+        injector.registerFactory("B", new FactoryB1(), "D");
+        injector.registerFactory("B", new FactoryB1(), "I");
         System.out.println("************ End of Test8 **************");
         System.out.println("");
     }
     
     @Test(expected = DependencyException.class)    
-    public void Test9() throws DependencyException{
+    public void getFactoryD1WithBadArguments() throws DependencyException{
         System.out.println("************ Starting Test9 ************");
         System.out.println("Testing FactoryD1 is correctly registeret but not with correct arguments and trying to get a instance of it.");
-        Injector injector = new Container();
         String[] str = {"patata", "poma", "GEIADE"};
         injector.registerConstant("I", str);
-        injector.registerFacotry("D", new FactoryD1(), "I");
+        injector.registerFactory("D", new FactoryD1(), "I");
         InterfaceD d = (InterfaceD) injector.getObject("D");
         System.out.println("************ End of Test9 **************");
         System.out.println("");
     }
+    
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+///////////////////////////    Auxiliar methods    /////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+  
+    private void registConstances()throws DependencyException{
+        injector.registerConstant("I", 42);
+        injector.registerConstant("S", "patata");
+    }
+    
+    
     
 }
