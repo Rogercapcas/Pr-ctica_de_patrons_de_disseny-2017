@@ -16,7 +16,7 @@ import java.util.HashMap;
 public class Container implements Injector {
     
     private HashMap<String,Object> registeredObjects;
-    private HashMap<String,Factory> FactoriesMap;
+    private HashMap<String,simple.Factory> FactoriesMap;
     private HashMap<String,String[]> dependencesMap;
     private boolean DEBUG = false;
     
