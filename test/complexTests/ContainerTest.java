@@ -10,12 +10,15 @@ import complex.*;
 import Factories2.*;
 import Implementation.*;
 import Interfaces.*;
+import junit.framework.Assert;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
 /**
  *
  * @author roger
@@ -77,10 +80,7 @@ public class ContainerTest {
         System.out.println("************ Starting Test3 ************");
         System.out.println("Testing FactoryA1 is correctly registered and get a instance of it.");
         registConstances();
-        injector.registerFactory(InterfaceD.class, new FactoryD1(), Integer.class);
-        injector.registerFactory(InterfaceC.class, new FactoryC1(), String.class);
-        injector.registerFactory(InterfaceB.class, new FactoryB1(), InterfaceD.class);
-        injector.registerFactory(InterfaceA.class, new FactoryA1(), InterfaceB.class,InterfaceC.class);
+        registerAllFactories();
         InterfaceA a = (InterfaceA) injector.getObject(InterfaceA.class);
         assertThat(a, is(instanceOf(ImplementationA1.class)));
         ImplementationA1 a1 = (ImplementationA1) a;
@@ -146,6 +146,28 @@ public class ContainerTest {
         System.out.println("");
     }
     
+    @Test
+    public void checkGetObjectReturnsDifferentsObjects() throws DependencyException{
+    registConstances();
+    registerAllFactories();
+    ImplementationA1 A1 = (ImplementationA1) injector.getObject(InterfaceA.class);
+    ImplementationA1 A2 = (ImplementationA1) injector.getObject(InterfaceA.class);
+    ImplementationB1 B1 = (ImplementationB1) injector.getObject(InterfaceB.class);
+    ImplementationB1 B2 = (ImplementationB1) injector.getObject(InterfaceB.class);
+    ImplementationC1 C1 = (ImplementationC1) injector.getObject(InterfaceC.class);
+    ImplementationC1 C2 = (ImplementationC1) injector.getObject(InterfaceC.class);
+    ImplementationD1 D1 = (ImplementationD1) injector.getObject(InterfaceD.class);
+    ImplementationD1 D2 = (ImplementationD1) injector.getObject(InterfaceD.class);
+    
+       assertFalse(A1==A2);
+       assertFalse(B1==B2);
+       assertFalse(C1==C2);
+       assertFalse(D1==D2);
+        
+    
+    
+}
+    
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////     Auxiliar method    /////////////////////////////
@@ -155,5 +177,11 @@ public class ContainerTest {
     private void registConstances()throws DependencyException{
         injector.registerConstant(Integer.class, 42);
         injector.registerConstant(String.class, "patata");
+    }
+    private void registerAllFactories() throws DependencyException{
+        injector.registerFactory(InterfaceD.class, new FactoryD1(), Integer.class);
+        injector.registerFactory(InterfaceC.class, new FactoryC1(), String.class);
+        injector.registerFactory(InterfaceB.class, new FactoryB1(), InterfaceD.class);
+        injector.registerFactory(InterfaceA.class, new FactoryA1(), InterfaceB.class,InterfaceC.class);
     }
 }

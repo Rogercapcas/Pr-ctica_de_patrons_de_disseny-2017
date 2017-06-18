@@ -14,6 +14,7 @@ import Interfaces.*;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertFalse;
 import org.junit.Before;
 import org.junit.Test;
 /**
@@ -77,10 +78,7 @@ public class ContainerTest {
         System.out.println("************ Starting Test3 ************");
         System.out.println("Testing FactoryA1 is correctly registered and get a instance of it.");
         registConstances();
-        injector.registerFactory("D", new FactoryD1(), "I");
-        injector.registerFactory("C", new FactoryC1(), "S");
-        injector.registerFactory("B", new FactoryB1(), "D");
-        injector.registerFactory("A", new FactoryA1(), "B","C");
+        registerAllFactories();
         InterfaceA a = (InterfaceA) injector.getObject("A");
         assertThat(a, is(instanceOf(ImplementationA1.class)));
         ImplementationA1 a1 = (ImplementationA1) a;
@@ -158,13 +156,38 @@ public class ContainerTest {
         System.out.println("************ End of Test9 **************");
         System.out.println("");
     }
+    @Test
+    public void checkGetObjectReturnsDifferentsObjects() throws DependencyException{
+    registConstances();
+    registerAllFactories();
+    ImplementationA1 A1 = (ImplementationA1) injector.getObject("A");
+    ImplementationA1 A2 = (ImplementationA1) injector.getObject("A");
+    ImplementationB1 B1 = (ImplementationB1) injector.getObject("B");
+    ImplementationB1 B2 = (ImplementationB1) injector.getObject("B");
+    ImplementationC1 C1 = (ImplementationC1) injector.getObject("C");
+    ImplementationC1 C2 = (ImplementationC1) injector.getObject("C");
+    ImplementationD1 D1 = (ImplementationD1) injector.getObject("D");
+    ImplementationD1 D2 = (ImplementationD1) injector.getObject("D");
     
+       assertFalse(A1==A2);
+       assertFalse(B1==B2);
+       assertFalse(C1==C2);
+       assertFalse(D1==D2);
+    
+    }
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////     Auxiliar method    /////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
   
+    private void registerAllFactories() throws DependencyException{
+        injector.registerFactory("D", new FactoryD1(), "I");
+        injector.registerFactory("C", new FactoryC1(), "S");
+        injector.registerFactory("B", new FactoryB1(), "D");
+        injector.registerFactory("A", new FactoryA1(), "B","C");
+    }
+    
     private void registConstances()throws DependencyException{
         injector.registerConstant("I", 42);
         injector.registerConstant("S", "patata");
